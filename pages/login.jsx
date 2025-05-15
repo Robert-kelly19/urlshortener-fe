@@ -9,11 +9,6 @@ export default function Login() {
     email: Yup.string().email("invalid email").required("email is required"),
     password: Yup.string()
       .required("Password is required")
-      .min(8, "Password must be at least 8 characters")
-      .matches(/[a-z]/, "At least one lowercase letter required")
-      .matches(/[A-Z]/, "At least one uppercase letter required")
-      .matches(/[0-9]/, "At least one number required")
-      .matches(/[@$!%*?&#]/, "At least one special character required"),
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -23,7 +18,10 @@ export default function Login() {
         values
       );
       console.log("form submitted", res.data);
+      localStorage.setItem('token', res.data.token);
+      console.log("this is the token:",res.data.token)
       resetForm();
+      navigate('/home')
     } catch (error) {
       console.error("error while submitting:", error);
     } finally {
@@ -35,7 +33,7 @@ export default function Login() {
       email: "",
       password: "",
     },
-    validateSchema,
+    validationSchema: validateSchema,
     onSubmit: handleSubmit,
   });
   return (

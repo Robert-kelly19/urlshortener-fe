@@ -95,3 +95,7 @@ input {
   color: white;
   transition: linear 1s;
 }
+
+@media (min-width: 768px) {
+  
+}

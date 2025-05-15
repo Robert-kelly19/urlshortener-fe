@@ -2,7 +2,7 @@ import React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
-import axios from "axios";
+
 
 export default function Signup() {
     const navigate = useNavigate();
@@ -24,14 +24,15 @@ export default function Signup() {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const res = await fetch(`http://localhost:8000/auth/register`, ({
+      const res = await fetch(`http://localhost:8000/auth/register`, {
         method:"post",
         headers:{'content-Type': 'application/json',},
         body:JSON.stringify(values)
-      }));
+      });
       const data = await res.json();
       console.log("submited:", data);
       resetForm();
+      navigate('/home')
     } catch (error) {
       console.error("error while registatring:", error);
     } finally {
@@ -47,7 +48,7 @@ export default function Signup() {
       password: "",
       confirmpassword: "",
     },
-    validateSchema,
+    validationSchema: validateSchema,
     onSubmit: handleSubmit,
   });
   return (
