@@ -53,7 +53,7 @@ export default function Login() {
                 <span>Url</span>Shortener
               </h1>
             </div>
-            <p>Get a short Url for your links</p>
+            <h4>login to your Account</h4>
           </div>
           <div className="item2">
             <form onSubmit={formik.handleSubmit}>
@@ -63,6 +63,7 @@ export default function Login() {
                 <input
                   type="email"
                   name="email"
+                  placeholder="enter your email"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
@@ -78,6 +79,7 @@ export default function Login() {
                 <input
                   type="password"
                   name="password"
+                  placeholder="password"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
@@ -87,13 +89,13 @@ export default function Login() {
                 )}
               </div>
 
-              <button type="submit" disabled={formik.isSubmitting}>
+              <button type="submit" id="btn" disabled={formik.isSubmitting}>
                 {formik.isSubmitting ? "loggingin..." : "login"}
               </button>
             </form>
           </div>
           <hr />
-          <button onClick={()=>navigate('/signup')}>Create New Account</button>
+          <button id='switch' onClick={()=>navigate('/signup')}>Create New Account</button>
         </div>
       </div>
     </>

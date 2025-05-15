@@ -54,7 +54,7 @@ export default function Signup() {
     <>
       <div className="contain">
         <div className="con1">
-          <div className="item1-1">
+          <div className="item1-2">
             <img
               src="https://cdn-icons-png.flaticon.com/512/2615/2615096.png"
               alt="logo"
@@ -63,7 +63,9 @@ export default function Signup() {
               <span>Url</span>Shortener
             </h1>
           </div>
-          <form onSubmit={formik.handleSubmit}>
+          <form id='signup'onSubmit={formik.handleSubmit}>
+          <h3>create a new account</h3>
+          <hr />
             <div className="names">
               <div>
                 <label htmlFor="firstName">FirstName</label>
@@ -143,10 +145,11 @@ export default function Signup() {
                   )}
               </div>
             </div>
-            <button type="submit" id="signup" disabled={formik.isSubmitting}>
+            <button type="submit" id="btn" disabled={formik.isSubmitting}>
               {formik.isSubmitting ? "Signing Up..." : "Sign Up"}
             </button>
-            <p onClick={()=>navigate('/')}>Already have an account</p>
+            <br /> <hr />
+            <button id='switch'onClick={()=>navigate('/')}>Already have an account</button>
           </form>
         </div>
       </div>

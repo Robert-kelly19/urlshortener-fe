@@ -1,0 +1,97 @@
+body {
+    background-color: whitesmoke;
+}
+.container, .contain {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+}
+
+.item, #signup {
+  background-color: white;
+  border-radius: 15px 75px 15px 75px;
+  padding: 30px 35px;
+  box-shadow: cadetblue 1px 2px 12px 1px;
+}
+
+.item1-1, .item1-2 {
+    display: flex;
+}
+
+.item1-2 {
+    margin-left: 15%;
+}
+
+.item1-1 img, .item1-2 img {
+  height: 50px;
+  /* filter: hue-rotate(110deg) saturate(2) brightness(0.4); */
+  animation: rotate 5s linear infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(360deg);
+    }
+}
+
+h1 span {
+    color:dodgerblue;
+}
+
+h4, h3 {
+  text-align: center;
+  font-size: 100%;
+  font-weight: bolder;
+  margin-top: -15px;
+}
+
+h3 {
+  font-size: 150%;
+  font-weight: 400;
+}
+
+label {
+  color: #808080;
+  font-size: 90%;
+  font-weight: bolder;
+}
+
+input {
+  border-radius: 6px;
+  border: solid black 1px;
+  margin: 3px 0;
+  padding: 4px;
+  color: black;
+  width: 95%;
+}
+
+#btn {
+  background-color: dodgerblue;
+  border: transparent;
+  color: white;
+  margin-top: 5px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+#switch {
+  background-color: white;
+  border: solid lightgrey 1px;
+  color: dodgerblue;
+  margin-top: 5px;
+  width: 80%;
+  border-radius: 5px;
+  margin-left: 10%;
+}
+
+#switch:hover{
+  background-color: dodgerblue;
+  color: white;
+  transition: linear 1s;
+}
