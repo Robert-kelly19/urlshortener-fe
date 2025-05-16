@@ -14,7 +14,7 @@ export default function Login() {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       const res = await axios.post(
-        `http://localhost:8000/auth/login`,
+        `https://url-shortener-production-0bea.up.railway.app/auth/login`,
         values
       );
       console.log("form submitted", res.data);

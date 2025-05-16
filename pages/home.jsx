@@ -1,31 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
+import Footer from "../components/footer";
 
 export default function Home() {
-    const token = localStorage.getItem('token')
+  const [urls, setUrls] = useState([]);
+  const token = localStorage.getItem("token");
+
+ 
   const validateSchema = Yup.object({
-    longUrl: Yup.string().required("longUrl is required"),
+    longUrl: Yup.string().required("Long URL is required"),
     customCode: Yup.string().optional(),
-    expiresAt: Yup.date().required("expiring date is required"),
+    expiresAt: Yup.date().required("Expiring date is required"),
   });
 
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+ 
+  const fetchUrls = async () => {
     try {
-      const res = await axios.post(`http://localhost:8000/url/shorten`, values,{
+      const res = await fetch("https://url-shortener-production-0bea.up.railway.app/url/my-urls", {
         headers: {
-            'Authorization': `Bearer ${token}`
-          }
-      },);
-      console.log(res.data);
-      resetForm();
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      setUrls(data.results || []);
     } catch (error) {
-      console.error(error);
-    } finally {
-      setSubmitting(false);
+      console.error("Error fetching URLs:", error);
     }
   };
+
+
+  useEffect(() => {
+    fetchUrls();
+  }, []);
+
+
   const formik = useFormik({
     initialValues: {
       longUrl: "",
@@ -33,12 +43,31 @@ export default function Home() {
       expiresAt: "",
     },
     validationSchema: validateSchema,
-    onSubmit: handleSubmit,
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      try {
+        const res = await axios.post(
+          "https://url-shortener-production-0bea.up.railway.app/url/shorten",
+          values,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(res.data);
+        resetForm();
+        fetchUrls();
+      } catch (error) {
+        console.error("Error shortening URL:", error);
+      } finally {
+        setSubmitting(false);
+      }
+    },
   });
 
   return (
     <>
-      <h1 id="typing">Welcome</h1>
+      <h1 id="typing">Welcome on board</h1>
       <div className="grid">
         <div className="grid-right">
           <form onSubmit={formik.handleSubmit}>
@@ -46,7 +75,7 @@ export default function Home() {
               <input
                 type="text"
                 name="longUrl"
-                placeholder="enter your long link "
+                placeholder="Enter your long URL"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.longUrl}
@@ -55,24 +84,22 @@ export default function Home() {
                 <div style={{ color: "red" }}>{formik.errors.longUrl}</div>
               )}
             </div>
+
             <div>
               <input
                 type="text"
                 name="customCode"
-                placeholder="enter your customCode(optional) "
+                placeholder="Enter a custom code (optional)"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.customCode}
               />
-              {formik.touched.customCode && formik.errors.customCode && (
-                <div style={{ color: "red" }}>{formik.errors.customCode}</div>
-              )}
             </div>
+
             <div>
               <input
                 type="date"
                 name="expiresAt"
-                placeholder="enter your customCode(optional) "
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.expiresAt}
@@ -82,15 +109,26 @@ export default function Home() {
                 <div style={{ color: "red" }}>{formik.errors.expiresAt}</div>
               )}
             </div>
-            <button type="submit" disabled={formik.isSubmitting}>
-              {formik.isSubmitting ? "Shortening..." : "Shorten URL"}
+
+            <button type="submit" className="sh-link" disabled={formik.isSubmitting}>
+              {formik.isSubmitting ? "Shortening..." : "Shorten"}
             </button>
           </form>
         </div>
+
         <div className="grid-left">
-            <h1 id="myurl"> MY shorten links</h1>
+          <h1 id="myurl">MY Shortened Links</h1>
+          <div className="urls">
+            {urls.length === 0 ? (
+              <p>No URLs found.
+              </p>
+            ) : (
+              urls.map((url, index) => <Cards key={index} url={url} />)
+            )}
+          </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

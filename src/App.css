@@ -96,6 +96,119 @@ input {
   transition: linear 1s;
 }
 
+.cards {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background: #f9f9f9;
+  transition: 0.3s ease;
+}
+.cards:hover {
+  background: #f1f1f1;
+}
+
+.heart {
+  color: red;
+  transform-origin: center;
+  animation: beat 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes beat {
+  from {
+    transform: scale(1);  }
+
+    to {
+      transform: scale(1.2);
+    }
+}
+
+#typing {
+  text-align: center;
+  color: dodgerblue;
+  font-family: serif;
+  animation: type 1s 15s 1 forwards;
+}
+
+@keyframes type {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.grid-right {
+  padding: 30px 35px;
+  box-shadow: lightgrey 1px 1px 12px 10px;
+  border-radius: 10px;
+  height: max-content;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.grid-right input {
+  margin-bottom: 10px;
+}
+
+.sh-link {
+  padding: 5px;
+  font-size: large;
+  font-family: sans-serif;
+  font-weight: 600;
+  background-color: dodgerblue;
+  color: white;
+  border: transparent;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.grid-left {
+  padding: 30px 35px;
+  box-shadow: lightgrey 1px 1px 12px 10px;
+  border-radius: 10px;
+  width: 80%;
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 250px;
+}
+
+#myurl {
+  text-align: center;
+  color: dodgerblue;
+  position: sticky;
+  top: -32px;
+  background-color: whitesmoke;
+  width: 100%;
+}
+
+footer h1 {
+  background-color: dodgerblue;
+  font-size: larger;
+  text-align: center;
+  width: 100%;
+  color: white;
+  font-family: fangsong;
+}
+
 @media (min-width: 768px) {
-  
+  .grid {
+    display: grid;
+    grid-template-columns: 2fr 4fr;
+    gap: 10%;
+    margin-left: 5%;
+    height: 66.5vh;
+  }
+
+  #typing {
+    font-size: xxx-large;
+    margin-bottom: 6%;
+  }
+
+  footer h1 {
+    margin-bottom: -40%;
+  }
 }

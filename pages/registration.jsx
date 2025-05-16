@@ -24,7 +24,7 @@ export default function Signup() {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const res = await fetch(`http://localhost:8000/auth/register`, {
+      const res = await fetch(`https://url-shortener-production-0bea.up.railway.app/auth/register`, {
         method:"post",
         headers:{'content-Type': 'application/json',},
         body:JSON.stringify(values)
