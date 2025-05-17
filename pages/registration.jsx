@@ -1,4 +1,3 @@
-import React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
@@ -12,11 +11,10 @@ export default function Signup() {
     email: Yup.string().email().required("email is required"),
     password: Yup.string()
       .required("Password is required")
-      .min(8, "Password must be at least 8 characters")
+      .min(5, "Password must be at least 8 characters")
       .matches(/[a-z]/, "At least one lowercase letter required")
       .matches(/[A-Z]/, "At least one uppercase letter required")
-      .matches(/[0-9]/, "At least one number required")
-      .matches(/[@$!%*?&#]/, "At least one special character required"),
+      .matches(/[0-9]/, "At least one number required"),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Please confirm your password"),
@@ -29,8 +27,7 @@ export default function Signup() {
         headers:{'content-Type': 'application/json',},
         body:JSON.stringify(values)
       });
-      const data = await res.json();
-      console.log("submited:", data);
+      const data = await res.json();;
       resetForm();
       navigate('/home')
     } catch (error) {
@@ -46,7 +43,7 @@ export default function Signup() {
       lastName: "",
       email: "",
       password: "",
-      confirmpassword: "",
+      confirmPassword: "",
     },
     validationSchema: validateSchema,
     onSubmit: handleSubmit,
@@ -113,7 +110,6 @@ export default function Signup() {
             </div>
             <div className="password">
               <div>
-                {" "}
                 <label htmlFor="password">Password</label>
                 <input
                   type="password"
@@ -129,19 +125,19 @@ export default function Signup() {
               </div>
               <div>
                 {" "}
-                <label htmlFor="confirmpassword">Confirm Password</label>
+                <label htmlFor="confirmPassword">Confirm Password</label>
                 <input
                   type="password"
-                  name="confirmpassword"
+                  name="confirmPassword"
                   placeholder="confirm your password"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.confirmpassword}
+                  value={formik.values.confirmPassword}
                 />
-                {formik.touched.confirmpassword &&
-                  formik.errors.confirmpassword && (
+                {formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword && (
                     <div style={{ color: "red" }}>
-                      {formik.errors.confirmpassword}
+                      {formik.errors.confirmPassword}
                     </div>
                   )}
               </div>
@@ -150,7 +146,7 @@ export default function Signup() {
               {formik.isSubmitting ? "Signing Up..." : "Sign Up"}
             </button>
             <br /> <hr />
-            <button id='switch'onClick={()=>navigate('/')}>Already have an account</button>
+            <button id='switch' type="button" onClick={()=>navigate('/')}>Already have an account</button>
           </form>
         </div>
       </div>

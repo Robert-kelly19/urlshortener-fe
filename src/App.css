@@ -166,6 +166,24 @@ input {
   margin-top: 5px;
 }
 
+li {
+  border: 1px solid #e2e2e2;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background-color: #fdfdfd;
+}
+
+.card a {
+  color: #0077cc;
+  text-decoration: none;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
+
 .grid-left {
   padding: 30px 35px;
   box-shadow: lightgrey 1px 1px 12px 10px;

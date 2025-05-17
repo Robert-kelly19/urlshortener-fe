@@ -1,40 +1,71 @@
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import axios from "axios";
 import Footer from "../components/footer";
 
 export default function Home() {
-  const [urls, setUrls] = useState([]);
   const token = localStorage.getItem("token");
+  const [urls, setUrls] = useState([]);
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(true);
 
- 
-  const validateSchema = Yup.object({
-    longUrl: Yup.string().required("Long URL is required"),
-    customCode: Yup.string().optional(),
-    expiresAt: Yup.date().required("Expiring date is required"),
-  });
-
- 
-  const fetchUrls = async () => {
+  const getUrls = async () => {
     try {
-      const res = await fetch("https://url-shortener-production-0bea.up.railway.app/url/my-urls", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `https://url-shortener-production-0bea.up.railway.app/url/my-urls`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Failed to fetch your URLs");
       const data = await res.json();
-      setUrls(data.results || []);
-    } catch (error) {
-      console.error("Error fetching URLs:", error);
+      setUrls(data);
+    } catch (err) {
+      setErr(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-
   useEffect(() => {
-    fetchUrls();
+    getUrls();
   }, []);
 
+  const validateSchema = Yup.object({
+    longUrl: Yup.string().required("Long URL is required"),
+    customCode: Yup.string(),
+    expiresAt: Yup.date().required("Expiring date is required"),
+  });
+
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    try {
+      const res = await fetch(
+        `https://url-shortener-production-0bea.up.railway.app/url/shorten`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(values),
+        }
+      );
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.message || "Failed to shorten the URL");
+      }
+
+      resetForm();
+      await getUrls();
+    } catch (error) {
+      console.error("Error while shortening URL:", error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -43,31 +74,15 @@ export default function Home() {
       expiresAt: "",
     },
     validationSchema: validateSchema,
-    onSubmit: async (values, { setSubmitting, resetForm }) => {
-      try {
-        const res = await axios.post(
-          "https://url-shortener-production-0bea.up.railway.app/url/shorten",
-          values,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log(res.data);
-        resetForm();
-        fetchUrls();
-      } catch (error) {
-        console.error("Error shortening URL:", error);
-      } finally {
-        setSubmitting(false);
-      }
-    },
+    onSubmit: handleSubmit,
   });
+
+  if (loading) return <p>Loading...</p>;
+  if (err) return <p>Error: {err}</p>;
 
   return (
     <>
-      <h1 id="typing">Welcome on board</h1>
+      <h1 id="typing">Welcome On Board</h1>
       <div className="grid">
         <div className="grid-right">
           <form onSubmit={formik.handleSubmit}>
@@ -75,7 +90,7 @@ export default function Home() {
               <input
                 type="text"
                 name="longUrl"
-                placeholder="Enter your long URL"
+                placeholder="Enter your long link"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.longUrl}
@@ -84,18 +99,16 @@ export default function Home() {
                 <div style={{ color: "red" }}>{formik.errors.longUrl}</div>
               )}
             </div>
-
             <div>
               <input
                 type="text"
                 name="customCode"
-                placeholder="Enter a custom code (optional)"
+                placeholder="Enter your custom code (optional)"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.customCode}
               />
             </div>
-
             <div>
               <input
                 type="date"
@@ -109,26 +122,37 @@ export default function Home() {
                 <div style={{ color: "red" }}>{formik.errors.expiresAt}</div>
               )}
             </div>
-
-            <button type="submit" className="sh-link" disabled={formik.isSubmitting}>
-              {formik.isSubmitting ? "Shortening..." : "Shorten"}
+            <button
+              type="submit"
+              className="sh-link"
+              disabled={formik.isSubmitting}
+            >
+              {formik.isSubmitting ? "Shortening..." : "Shorten URL"}
             </button>
           </form>
         </div>
-
         <div className="grid-left">
-          <h1 id="myurl">MY Shortened Links</h1>
+          <h1 id="myurl">My Shortened Links</h1>
           <div className="urls">
-            {urls.length === 0 ? (
-              <p>No URLs found.
-              </p>
+            {urls.length > 0 ? (
+              <ol>
+                {urls.map((url, index) => (
+                  <li key={index}>
+                    <p>Long: {url.long_url}</p>
+                    <p>Short: {url.short_code}</p>
+                    <p>Clicks: {url.clicks}</p>
+                    <p>Created: {url.created_at}</p>
+                    <p>Expires: {url.expires_at}</p>
+                  </li>
+                ))}
+              </ol>
             ) : (
-              urls.map((url, index) => <Cards key={index} url={url} />)
+              <p>You haven't shortened any URLs yet.</p>
             )}
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }
