@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Footer from "../components/footer";
+import Redirect from "../components/redirect";
 
 export default function Home() {
   const token = localStorage.getItem("token");
@@ -19,7 +20,7 @@ export default function Home() {
           },
         }
       );
-      if (!res.ok) throw new Error("Failed to fetch your URLs");
+      if (!res.ok) throw new Error("No token. Authorization denied.");
       const data = await res.json();
       setUrls(data);
     } catch (err) {
@@ -83,6 +84,7 @@ export default function Home() {
   return (
     <>
       <h1 id="typing">Welcome On Board</h1>
+      <Redirect/>
       <div className="grid">
         <div className="grid-right">
           <form onSubmit={formik.handleSubmit}>

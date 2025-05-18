@@ -27,9 +27,9 @@ export default function Signup() {
         headers:{'content-Type': 'application/json',},
         body:JSON.stringify(values)
       });
-      const data = await res.json();;
+      const data = await res.json();
       resetForm();
-      navigate('/home')
+      navigate('/dashboard')
     } catch (error) {
       console.error("error while registatring:", error);
     } finally {
@@ -146,7 +146,7 @@ export default function Signup() {
               {formik.isSubmitting ? "Signing Up..." : "Sign Up"}
             </button>
             <br /> <hr />
-            <button id='switch' type="button" onClick={()=>navigate('/')}>Already have an account</button>
+            <button id='switch' type="button" onClick={()=>navigate('/login')}>Already have an account</button>
           </form>
         </div>
       </div>

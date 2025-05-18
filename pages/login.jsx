@@ -34,7 +34,7 @@ export default function Login() {
       const data = await response.json();
       localStorage.setItem("token", data.token);
       resetForm();
-      navigate("/home");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error while submitting:", error);
       setApiError(error.message);
@@ -115,7 +115,7 @@ export default function Login() {
             </form>
           </div>
           <hr />
-          <button id="switch" onClick={() => navigate("/signup")}>
+          <button id="switch" onClick={() => navigate("/")}>
             Create New Account
           </button>
         </div>
