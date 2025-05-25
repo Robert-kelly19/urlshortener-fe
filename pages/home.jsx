@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Footer from "../components/footer";
-import Redirect from "../components/redirect";
 
 export default function Home() {
   const token = localStorage.getItem("token");
@@ -13,14 +12,14 @@ export default function Home() {
   const getUrls = async () => {
     try {
       const res = await fetch(
-        `https://url-shortener-production-0bea.up.railway.app/url/my-urls`,
+        `http://localhost:8000/url/my-urls`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      if (!res.ok) throw new Error("No token. Authorization denied.");
+      if (!res.ok) throw new Error("Failed to fetch your URLs or Authorization denied");
       const data = await res.json();
       setUrls(data);
     } catch (err) {
@@ -43,7 +42,7 @@ export default function Home() {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       const res = await fetch(
-        `https://url-shortener-production-0bea.up.railway.app/url/shorten`,
+        `http://localhost:8000/url/shorten`,
         {
           method: "POST",
           headers: {
@@ -84,7 +83,6 @@ export default function Home() {
   return (
     <>
       <h1 id="typing">Welcome On Board</h1>
-      <Redirect/>
       <div className="grid">
         <div className="grid-right">
           <form onSubmit={formik.handleSubmit}>
@@ -141,8 +139,7 @@ export default function Home() {
                 {urls.map((url, index) => (
                   <li key={index}>
                     <p>Long: {url.long_url}</p>
-                    <p>Short: {url.short_code}</p>
-                    <p>Clicks: {url.clicks}</p>
+                    <p><a href={`http://localhost:8000/redirect/${url.short_code}`} target="_blank" rel="noopener noreferrer">Short: {url.short_code}</a></p>
                     <p>Created: {url.created_at}</p>
                     <p>Expires: {url.expires_at}</p>
                   </li>
