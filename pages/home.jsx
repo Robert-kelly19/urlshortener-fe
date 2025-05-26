@@ -35,7 +35,7 @@ export default function Home() {
 
   const validateSchema = Yup.object({
     longUrl: Yup.string().required("Long URL is required"),
-    customCode: Yup.string(),
+    customCode: Yup.string().required("customcode is required"),
     expiresAt: Yup.date().required("Expiring date is required"),
   });
 
@@ -103,7 +103,7 @@ export default function Home() {
               <input
                 type="text"
                 name="customCode"
-                placeholder="Enter your custom code (optional)"
+                placeholder="Enter your custom code"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.customCode}
