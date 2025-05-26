@@ -59,7 +59,7 @@ export default function Home() {
       }
 
       resetForm();
-      await getUrls();
+      // await getUrls();
     } catch (error) {
       console.error("Error while shortening URL:", error.message);
     } finally {
