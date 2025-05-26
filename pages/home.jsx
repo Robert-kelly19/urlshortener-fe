@@ -12,7 +12,7 @@ export default function Home() {
   const getUrls = async () => {
     try {
       const res = await fetch(
-        `http://localhost:8000/url/my-urls`,
+        `https://url-shortener-production-0bea.up.railway.app/url/my-urls`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -42,7 +42,7 @@ export default function Home() {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       const res = await fetch(
-        `http://localhost:8000/url/shorten`,
+        `https://url-shortener-production-0bea.up.railway.app/url/shorten`,
         {
           method: "POST",
           headers: {
@@ -139,7 +139,7 @@ export default function Home() {
                 {urls.map((url, index) => (
                   <li key={index}>
                     <p>Long: {url.long_url}</p>
-                    <p><a href={`http://localhost:8000/redirect/${url.short_code}`} target="_blank" rel="noopener noreferrer">Short: {url.short_code}</a></p>
+                    <p><a href={`https://url-shortener-production-0bea.up.railway.app/redirect/${url.short_code}`} target="_blank" rel="noopener noreferrer">Short: {url.short_code}</a></p>
                     <p>Created: {url.created_at}</p>
                     <p>Expires: {url.expires_at}</p>
                   </li>

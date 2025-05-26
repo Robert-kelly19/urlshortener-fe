@@ -14,7 +14,7 @@ export default function Login() {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
+      const response = await fetch("https://url-shortener-production-0bea.up.railway.app/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
