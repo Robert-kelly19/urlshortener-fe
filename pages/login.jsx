@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Login() {
   const navigate = useNavigate();
 
+  const BE_URL = import.meta.env.VITE_BE_URL
+
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string().required("Password is required"),
@@ -14,7 +16,7 @@ export default function Login() {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const response = await fetch("https://url-shortener-production-0bea.up.railway.app/auth/login", {
+      const response = await fetch("http://localhost:8000/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -23,7 +25,7 @@ export default function Login() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+        throw new Error(data.message);
       }
 
       if (!data.token) {
@@ -53,17 +55,11 @@ export default function Login() {
       <div className="item">
         <div className="item1">
           <div className="item1-1">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/2615/2615096.png"
-              alt="logo"
-              width="60"
-              height="60"
-            />
             <h1>
               <span>Url</span>Shortener
             </h1>
           </div>
-          <h4>Login to your Account</h4>
+          <h3>Login to your Account</h3>
         </div>
 
         <div className="item2">
@@ -116,7 +112,7 @@ export default function Login() {
 
         <hr />
 
-        <button id="switch" onClick={() => navigate("/")}>
+        <button id="switch" onClick={() => navigate("/signUP")}>
           Create New Account
         </button>
       </div>

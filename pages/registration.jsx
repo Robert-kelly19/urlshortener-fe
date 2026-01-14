@@ -8,8 +8,6 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const validateSchema = Yup.object({
-    firstName: Yup.string().min(3).required("First name is required"),
-    lastName: Yup.string().min(3).required("Last name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
       .required("Password is required")
@@ -24,7 +22,7 @@ export default function Signup() {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const res = await fetch(`https://url-shortener-production-0bea.up.railway.app/auth/register`, {
+      const res = await fetch(`http://localhost:8000/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -34,12 +32,6 @@ export default function Signup() {
       if (!res.ok) {
         throw new Error(data.message || "Registration failed");
       }
-
-      if(!data.token){
-        throw new Error("No token return")
-      }
-
-      localStorage.setItem("token", data.token);
       toast.success(data.message);
       resetForm();
       navigate("/login");
@@ -52,8 +44,6 @@ export default function Signup() {
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -67,51 +57,14 @@ export default function Signup() {
       <ToastContainer position="top-center" autoClose={3000} />
       <div className="contain">
         <div className="con1">
-          <div className="item1-2">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/2615/2615096.png"
-              alt="logo"
-              width="60"
-              height="60"
-            />
+          <div className="item1-2"></div>
+
+          <form id="signup" onSubmit={formik.handleSubmit}>
             <h1>
               <span>Url</span>Shortener
             </h1>
-          </div>
-
-          <form id="signup" onSubmit={formik.handleSubmit}>
             <h3>Create a New Account</h3>
             <hr />
-            <div className="names">
-              <div>
-                <label htmlFor="firstName">First Name</label>
-                <input
-                  type="text"
-                  name="firstName"
-                  placeholder="Enter your first name"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.firstName}
-                />
-                {formik.touched.firstName && formik.errors.firstName && (
-                  <div style={{ color: "red" }}>{formik.errors.firstName}</div>
-                )}
-              </div>
-              <div>
-                <label htmlFor="lastName">Last Name</label>
-                <input
-                  type="text"
-                  name="lastName"
-                  placeholder="Enter your last name"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.lastName}
-                />
-                {formik.touched.lastName && formik.errors.lastName && (
-                  <div style={{ color: "red" }}>{formik.errors.lastName}</div>
-                )}
-              </div>
-            </div>
 
             <div>
               <label htmlFor="email">Email</label>
@@ -166,7 +119,11 @@ export default function Signup() {
               {formik.isSubmitting ? "Signing Up..." : "Sign Up"}
             </button>
             <hr />
-            <button id="switch" type="button" onClick={() => navigate("/login")}>
+            <button
+              id="switch"
+              type="button"
+              onClick={() => navigate("/login")}
+            >
               Already have an account
             </button>
           </form>
