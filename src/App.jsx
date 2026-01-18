@@ -1,9 +1,10 @@
-import Login from '../pages/login'
-import Signup from '../pages/registration'
-import Home from  '../pages/home'
+import Login from '../pages/login.jsx'
+import Signup from '../pages/registration.jsx'
+import Home from  '../pages/home.jsx'
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router'
-import Landing from '../pages/Landing'
+import Landing from '../pages/Landing.jsx'
+
 
 function App() {
   return (
