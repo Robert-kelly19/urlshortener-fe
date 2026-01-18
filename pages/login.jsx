@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Login() {
   const navigate = useNavigate();
 
-  const BE_URL = import.meta.env.VITE_BE_URL
+  const BE_URL = import.meta.env.VITE_BE_URL;
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -16,7 +16,7 @@ export default function Login() {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
+      const response = await fetch(`${BE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -52,6 +52,19 @@ export default function Login() {
   return (
     <div className="container">
       <ToastContainer position="top-center" autoClose={3000} />
+      
+      {/* Image Section */}
+      <div className="auth-image-section">
+        <img 
+          src="https://cdn-icons-png.flaticon.com/512/2615/2615096.png" 
+          alt="URL Shortener" 
+          className="auth-image"
+        />
+        <h2>Welcome Back!</h2>
+        <p>Sign in to your account to start managing your shortened links</p>
+      </div>
+
+      {/* Form Section */}
       <div className="item">
         <div className="item1">
           <div className="item1-1">

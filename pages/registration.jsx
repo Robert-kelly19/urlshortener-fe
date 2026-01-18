@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Signup() {
   const navigate = useNavigate();
 
+  const BE_URL = import.meta.env.VITE_BE_URL;
   const validateSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
@@ -22,7 +23,7 @@ export default function Signup() {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const res = await fetch(`http://localhost:8000/auth/register`, {
+      const res = await fetch(`${BE_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -56,6 +57,18 @@ export default function Signup() {
     <>
       <ToastContainer position="top-center" autoClose={3000} />
       <div className="contain">
+        {/* Image Section */}
+        <div className="auth-image-section">
+          <img 
+            src="https://pngimg.com/d/qr_code_PNG17.png" 
+            alt="QR Code" 
+            className="auth-image"
+          />
+          <h2>Join Us Today!</h2>
+          <p>Create an account and start shortening your links instantly</p>
+        </div>
+
+        {/* Form Section */}
         <div className="con1">
           <div className="item1-2"></div>
 

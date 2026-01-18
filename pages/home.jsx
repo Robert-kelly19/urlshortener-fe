@@ -53,7 +53,7 @@ export default function Home() {
   useEffect(() => {
     const getUrls = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/url/my-urls`, {
+        const res = await fetch(`${BE_URL}/url/my-urls`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -138,7 +138,7 @@ export default function Home() {
                         <p>
                           Short_code:
                           <a
-                            href={`http://localhost:8000/redirect/${url.short_code}`}
+                            href={`${BE_URL}/redirect/${url.short_code}`}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
@@ -161,6 +161,9 @@ export default function Home() {
                           year: "numeric",
                           day:"numeric",
                         })}</p>
+                        <p className="click-count">
+                          Times Clicked: <strong>{url.clicks || 0}</strong>
+                        </p>
                       </div>
                       <Qrcode link={url.short_code} />
                     </div>
