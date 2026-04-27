@@ -57,6 +57,7 @@ export default function Home() {
       if (!res.ok) throw new Error("Failed to fetch URLs")
       const data = await res.json()
       setUrls(data)
+      console.log("Fetched URLs:", data)
     } catch (err) {
       setErr(err.message)
     } finally {
@@ -388,6 +389,7 @@ export default function Home() {
                                         {url.clicks} clicks
                                       </span>
                                     )}
+                                    <span >Visitors: {url.unique_visitors || 0} </span>
                                   </div>
                                   <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                                     <span className="flex items-center gap-1">
