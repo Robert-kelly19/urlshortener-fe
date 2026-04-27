@@ -35,6 +35,7 @@ export default function Signup() {
       })
 
       const data = await res.json()
+      localStorage.setItem("email", values.email)
       if (!res.ok) {
         throw new Error(data.message || "Registration failed")
       }
@@ -45,7 +46,7 @@ export default function Signup() {
         variant: "success",
       })
       resetForm()
-      navigate("/login")
+      navigate("/login", { state: { email: values.email } })
     } catch (error) {
       addToast({
         title: "Error",
@@ -76,7 +77,6 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      {/* Animated background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
@@ -88,7 +88,6 @@ export default function Signup() {
         animate={{ opacity: 1, scale: 1 }}
         className="w-full max-w-md relative z-10"
       >
-        {/* Logo */}
         <motion.div 
           className="flex items-center justify-center gap-3 mb-8"
           initial={{ opacity: 0, y: -10 }}
@@ -110,9 +109,7 @@ export default function Signup() {
               transition={{ delay: 0.2 }}
             >
               <h1 className="text-2xl font-bold mb-2">Create an account</h1>
-              <p className="text-muted-foreground mb-6">
-                Get started with your free account
-              </p>
+              <p className="text-muted-foreground mb-6">Get started with your free account</p>
             </motion.div>
 
             <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -166,17 +163,10 @@ export default function Signup() {
                     {formik.errors.password}
                   </p>
                 )}
-                
-                {/* Password requirements indicator */}
                 {formik.values.password && (
                   <div className="mt-3 grid grid-cols-2 gap-2">
                     {passwordRequirements.map((req, i) => (
-                      <div 
-                        key={i}
-                        className={`text-xs flex items-center gap-1 ${
-                          req.met ? "text-emerald-400" : "text-muted-foreground"
-                        }`}
-                      >
+                      <div key={i} className={`text-xs flex items-center gap-1 ${req.met ? "text-emerald-400" : "text-muted-foreground"}`}>
                         <CheckCircle2 className={`w-3 h-3 ${req.met ? "opacity-100" : "opacity-30"}`} />
                         {req.label}
                       </div>
@@ -216,17 +206,9 @@ export default function Signup() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
               >
-                <Button 
-                  type="submit" 
-                  className="w-full" 
-                  disabled={formik.isSubmitting}
-                >
+                <Button type="submit" className="w-full" disabled={formik.isSubmitting}>
                   {formik.isSubmitting ? (
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ repeat: Infinity, duration: 1 }}
-                      className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-                    />
+                    <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }} className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" />
                   ) : (
                     <>
                       Create Account
@@ -245,10 +227,7 @@ export default function Signup() {
             >
               <p className="text-sm text-muted-foreground">
                 Already have an account?{" "}
-                <button
-                  onClick={() => navigate("/login")}
-                  className="text-primary hover:underline font-medium"
-                >
+                <button onClick={() => navigate("/login")} className="text-primary hover:underline font-medium">
                   Sign in
                 </button>
               </p>

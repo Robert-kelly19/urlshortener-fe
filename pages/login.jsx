@@ -1,5 +1,5 @@
 import { useFormik } from "formik"
-import { useNavigate } from "react-router"
+import { useNavigate, useLocation } from "react-router"
 import * as Yup from "yup"
 import { motion, AnimatePresence } from "framer-motion"
 import { Link2, Mail, Lock, ArrowRight, AlertCircle } from "lucide-react"
@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/use-toast"
 
 export default function Login() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { addToast } = useToast()
   const BE_URL = import.meta.env.VITE_BE_URL
 
@@ -56,14 +57,16 @@ export default function Login() {
   }
 
   const formik = useFormik({
-    initialValues: { email: "", password: "" },
+    initialValues: { 
+      email: location.state?.email || localStorage.getItem("email") || "", 
+      password: "" 
+    },
     validationSchema,
     onSubmit: handleSubmit,
   })
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      {/* Animated background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
@@ -75,7 +78,6 @@ export default function Login() {
         animate={{ opacity: 1, scale: 1 }}
         className="w-full max-w-md relative z-10"
       >
-        {/* Logo */}
         <motion.div 
           className="flex items-center justify-center gap-3 mb-8"
           initial={{ opacity: 0, y: -10 }}
@@ -97,9 +99,7 @@ export default function Login() {
               transition={{ delay: 0.2 }}
             >
               <h1 className="text-2xl font-bold mb-2">Welcome back</h1>
-              <p className="text-muted-foreground mb-6">
-                Sign in to your account to continue
-              </p>
+              <p className="text-muted-foreground mb-6">Sign in to your account to continue</p>
             </motion.div>
 
             <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -160,17 +160,9 @@ export default function Login() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <Button 
-                  type="submit" 
-                  className="w-full" 
-                  disabled={formik.isSubmitting}
-                >
+                <Button type="submit" className="w-full" disabled={formik.isSubmitting}>
                   {formik.isSubmitting ? (
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ repeat: Infinity, duration: 1 }}
-                      className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-                    />
+                    <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }} className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" />
                   ) : (
                     <>
                       Sign In
@@ -189,10 +181,7 @@ export default function Login() {
             >
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <button
-                  onClick={() => navigate("/signUp")}
-                  className="text-primary hover:underline font-medium"
-                >
+                <button onClick={() => navigate("/signUp")} className="text-primary hover:underline font-medium">
                   Sign up
                 </button>
               </p>
