@@ -16,7 +16,8 @@ import {
   LogOut,
   Menu,
   X,
-  AlertCircle
+  AlertCircle,
+  Users
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -389,7 +390,10 @@ export default function Home() {
                                         {url.clicks} clicks
                                       </span>
                                     )}
-                                    <span >Visitors: {url.unique_visitors || 0} </span>
+                                    <span className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400">
+                                      <Users className="w-3 h-3" />
+                                      Visitor(s): {url.unique_visitors || 0}
+                                    </span>
                                   </div>
                                   <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                                     <span className="flex items-center gap-1">
