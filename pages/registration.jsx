@@ -17,7 +17,7 @@ export default function Signup() {
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
       .required("Password is required")
-      .min(8, "Password must be at least 8 characters")
+      .min(5, "Password must be at least 5 characters")
       .matches(/[a-z]/, "At least one lowercase letter required")
       .matches(/[A-Z]/, "At least one uppercase letter required")
       .matches(/[0-9]/, "At least one number required"),
@@ -69,7 +69,7 @@ export default function Signup() {
   })
 
   const passwordRequirements = [
-    { label: "At least 8 characters", met: formik.values.password.length >= 8 },
+    { label: "At least 5 characters", met: formik.values.password.length >= 5 },
     { label: "One lowercase letter", met: /[a-z]/.test(formik.values.password) },
     { label: "One uppercase letter", met: /[A-Z]/.test(formik.values.password) },
     { label: "One number", met: /[0-9]/.test(formik.values.password) },
